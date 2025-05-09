@@ -1,0 +1,44 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:
+  containerName: BCLatest
+  ArtifactName: MyTestArtifact
+  system.debug: false
+
+trigger:
+- main
+
+pool:
+  name: Default
+  demands: docker
+
+steps:
+- checkout: self
+  submodules: true
+
+- task: CopyFiles@2 
+  inputs: 
+    Contents: '**'
+    TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my'
+    OverWrite: true  
+  
+- task: PowerShell@2 
+  inputs: 
+    targetType: 'inline'
+    script: | 
+      $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
+ 
+      Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\DevOpsTestProject -containerName $(containerName)  -AzureDevOps -EnablePerTenantExtensionCop -EnableCodeCop -EnableUICop -FailOn error -credential $credential
+ 
+      $appFile = Get-ChildItem -Path C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\DevOpsTestProject\output\*.app -Recurse -Force 
+ 
+      Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
+ 
+- task: PublishBuildArtifacts@1 
+  inputs: 
+    PathtoPublish: '"C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\DevOpsTestProject\output\"'
+    ArtifactName: $(ArtifactName) 
+    publishLocation: 'Container'
