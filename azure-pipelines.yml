@@ -39,6 +39,6 @@ steps:
  
 - task: PublishBuildArtifacts@1 
   inputs: 
-    PathtoPublish: '"C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\app\output\"'
+    PathtoPublish: '"C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\MyDevOpsTestFolder\Artifacts"'
     ArtifactName: $(ArtifactName) 
     publishLocation: 'Container'
