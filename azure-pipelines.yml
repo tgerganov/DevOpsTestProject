@@ -7,6 +7,8 @@ variables:
   containerName: BCLatest
   ArtifactName: MyTestArtifact
   system.debug: false
+  ServerInstance: BC
+  AppName: DevOpsTestProject
 
 trigger:
 - main
@@ -36,6 +38,8 @@ steps:
       $appFile = Get-ChildItem -Path C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\MyDevOpsTestFolder\output\*.app -Recurse -Force 
  
       Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
+
+      Start-NAVAppDataUpgrade -ServerInstance $ServerInstance -Name $AppName #-Version $NewVersion
  
 - task: PublishBuildArtifacts@1 
   inputs: 
