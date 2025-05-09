@@ -7,9 +7,7 @@ variables:
   containerName: BCLatest
   ArtifactName: MyTestArtifact
   system.debug: false
-  ServerInstance: BC
-  AppName: DevOpsTestProject
-
+  
 trigger:
 - main
 
@@ -39,7 +37,7 @@ steps:
  
       #Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
 
-      Start-NAVAppDataUpgrade -ServerInstance $ServerInstance -Name $AppName #-Version $NewVersion
+      Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject #-Version $NewVersion
  
 - task: PublishBuildArtifacts@1 
   inputs: 
