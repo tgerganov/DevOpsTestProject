@@ -37,7 +37,7 @@ steps:
  
       #Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
 
-      Import-Module "C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\NavAdminTool.ps1"
+      Import-Module "C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\Service\NavAdminTool.ps1"
 
       Start-NAVAppDataUpgrade -ServerInstance "BC" -Name "DevOpsTestProject" #-Version $NewVersion
  
