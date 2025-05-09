@@ -37,7 +37,7 @@ steps:
  
       #Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
 
-      Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject #-Version $NewVersion
+      Start-NAVAppDataUpgrade -ServerInstance "BC" -Name "DevOpsTestProject" #-Version $NewVersion
  
 - task: PublishBuildArtifacts@1 
   inputs: 
