@@ -39,7 +39,7 @@ steps:
 
       #Import-Module "C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\Service\NavAdminTool.ps1"
 
-      #Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject #-Version $NewVersion
+      Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject -Version 1.0.0.5
  
 - task: PublishBuildArtifacts@1 
   inputs: 
