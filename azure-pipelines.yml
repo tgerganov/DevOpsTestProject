@@ -35,11 +35,11 @@ steps:
  
       $appFile = Get-ChildItem -Path C:\ProgramData\BcContainerHelper\Extensions\$(containerName)\my\MyDevOpsTestFolder\output\*.app -Recurse -Force 
  
-      #Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
+      Publish-BcContainerApp -appFile $appfile -containerName $(containerName) -install -skipVerification -sync -syncMode ForceSync 
 
-      Import-Module "C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\Service\NavAdminTool.ps1"
+      #Import-Module "C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\Service\NavAdminTool.ps1"
 
-      Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject #-Version $NewVersion
+      #Start-NAVAppDataUpgrade -ServerInstance BC -Name DevOpsTestProject #-Version $NewVersion
  
 - task: PublishBuildArtifacts@1 
   inputs: 
