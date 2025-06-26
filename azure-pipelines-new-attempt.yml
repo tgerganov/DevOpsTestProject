@@ -1,0 +1,17 @@
+trigger:
+- main
+
+pool:
+  name: Default
+  demands:
+    - docker
+
+stages:
+- stage: Build
+  displayName: 'Build Stage'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build Job'
+    steps:
+    - checkout: self
+    - script: echo $(Build.Repository.LocalPath)
