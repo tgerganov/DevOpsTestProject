@@ -9,7 +9,7 @@ variables:
   system.debug: false
   
 trigger:
-- main
+- none
 
 pool:
   name: Default
