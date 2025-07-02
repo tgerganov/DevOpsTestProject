@@ -14,4 +14,10 @@ stages:
     displayName: 'Build Job'
     steps:
     - checkout: self
-    - script: echo $(Build.Repository.LocalPath)
+    #- script: echo $(Build.Repository.LocalPath)
+    - task: PowerShell@1
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
+          $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
+          Compile-AppInBcContainer -appProjectFolder C:\agent\_work\3\s -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
