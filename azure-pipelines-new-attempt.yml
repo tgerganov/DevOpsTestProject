@@ -19,5 +19,6 @@ stages:
       inputs:
         scriptType: inlineScript
         inlineScript: |
+          Check-BcContainerHelperPermissions -Fix
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
           Compile-AppInBcContainer -appProjectFolder C:\agent\_work\3\s -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
