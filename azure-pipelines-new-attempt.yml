@@ -14,18 +14,16 @@ stages:
     displayName: 'Build Job'
     steps:
     - checkout: self
-      path: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder'
     #- script: echo $(Build.Repository.LocalPath)
-    #- task: PowerShell@1
-      #inputs:
-        #scriptType: inlineScript
-        #inlineScript: |
-          #Check-BcContainerHelperPermissions -Fix
-          #$credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
-          #Compile-AppInBcContainer -appProjectFolder C:\agent\_work\3\s -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
-    - task: PowerShell@2
+    - task: CopyFiles@2
+      displayName: 'Copying repo files to container'
       inputs:
-        targetType: inline
-        script: |
+        SourceFolder: 'C:\agent\_work\3\s'
+        Contents: '**'
+        TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder'
+    - task: PowerShell@1
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
           Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
