@@ -21,9 +21,17 @@ stages:
         SourceFolder: 'C:\agent\_work\3\s'
         Contents: '**'
         TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder'
+        CleanTargetFolder: true
+
     - task: PowerShell@1
       inputs:
         scriptType: inlineScript
         inlineScript: |
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
           Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\output'
+        artifact: 'My first artifact'
+        publishLocation: pipeline
