@@ -1,0 +1,39 @@
+{
+  "id": "0d4156af-bfeb-4fee-4629-fb3a8c987ef1",
+  "name": "TheDevOpsTestTestApp",
+  "publisher": "MrTodor",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [
+    {
+      "id": "0d4346af-bfeb-4fee-9769-fb3a1c493ef1",  
+      "name": "DevOpsTestProject",
+      "publisher": "MrTodor",
+      "version": "1.0.0.0"
+    }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "25.0.0.0",
+  "idRanges": [
+    {
+      "from": 50150,
+      "to": 50199
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
