@@ -31,6 +31,7 @@ stages:
           Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
 
     - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact - Core'
       inputs:
         targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore\output'
         artifact: 'My Core App'
@@ -45,6 +46,7 @@ stages:
           Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\TestApp -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
 
     - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact - Test'
       inputs:
         targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\TestApp\output'
         artifact: 'Test App'
