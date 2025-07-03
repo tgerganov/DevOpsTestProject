@@ -30,6 +30,12 @@ stages:
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
           Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
 
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore\output'
+        artifact: 'My Core App'
+        publishLocation: pipeline 
+
     - task: PowerShell@1
       displayName: 'Compile Test App'
       inputs:
@@ -40,6 +46,6 @@ stages:
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\output'
-        artifact: 'Core + Test'
+        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\TestApp\output'
+        artifact: 'Test App'
         publishLocation: pipeline
