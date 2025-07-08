@@ -15,11 +15,11 @@ stages:
     displayName: 'Build Job - MyCore + Test Apps'
     steps:
     - checkout: self
-    - task: PowerShell@2
-      displayName: 'Creating a container'
-      inputs:
-        targetType: filePath
-        filePath: 'C:\agent\_work\3\s\Scripts\BCLatestScriptDevOps.ps1'
+    #- task: PowerShell@2
+      #displayName: 'Creating a container'
+      #inputs:
+        #targetType: filePath
+        #filePath: 'C:\agent\_work\3\s\Scripts\BCLatestScriptDevOps.ps1'
     - task: CopyFiles@2
       displayName: 'Copying repo files to container'
       inputs:
