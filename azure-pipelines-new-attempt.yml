@@ -1,5 +1,6 @@
 trigger:
-- main
+- none
+#- main
 
 pool:
   name: Default
@@ -14,12 +15,17 @@ stages:
     displayName: 'Build Job - MyCore + Test Apps'
     steps:
     - checkout: self
+    - task: PowerShell@2
+      displayName: 'Creating a container'
+      inputs:
+        targetType: filePath
+        filePath: 'C:\agent\_work\3\s\Scripts\BCLatestScriptDevOps.ps1'
     - task: CopyFiles@2
       displayName: 'Copying repo files to container'
       inputs:
         SourceFolder: 'C:\agent\_work\3\s'
         Contents: '**'
-        TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder'
+        TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder'
         CleanTargetFolder: true
 
     - task: PowerShell@1
@@ -28,12 +34,18 @@ stages:
         scriptType: inlineScript
         inlineScript: |
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
-          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
+          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\MyCore -containerName BCLatestDevOps -AzureDevOps -FailOn error -credential $credential
+
+    - task: PowerShell@2
+      displayName: 'Publishing and installing - Core'
+      inputs:
+        targetType: filePath
+        filePath: 'C:\agent\_work\3\s\Scripts\MyCoreInstall.ps1'
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact - Core'
       inputs:
-        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\MyCore\output'
+        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\MyCore\output'
         artifact: 'My Core App'
         publishLocation: pipeline 
 
@@ -43,11 +55,17 @@ stages:
         scriptType: inlineScript
         inlineScript: |
           $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
-          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\TestApp -containerName BCLatest -AzureDevOps -FailOn error -credential $credential
+          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\TestApp -containerName BCLatestDevOps -AzureDevOps -FailOn error -credential $credential
+
+    - task: PowerShell@2
+      displayName: 'Publishing and installing - Test App'
+      inputs:
+        targetType: filePath
+        filePath: 'C:\agent\_work\3\s\Scripts\MyTestAppInstall.ps1'
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact - Test'
       inputs:
-        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatest\my\appProjectFolder\TestApp\output'
+        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\TestApp\output'
         artifact: 'Test App'
         publishLocation: pipeline
