@@ -8,64 +8,45 @@ pool:
     - docker
 
 stages:
-- stage: Build
-  displayName: 'Build Stage'
+
+
+
+
+- stage: Test
+  displayName: 'Aut. tests stage'
   jobs:
-  - job: BuildJob
-    displayName: 'Build Job - MyCore + Test Apps'
+  - job: TestJob
+    displayName: 'Running automated tests'
     steps:
-    - checkout: self
-    #- task: PowerShell@2
-      #displayName: 'Creating a container'
-      #inputs:
-        #targetType: filePath
-        #filePath: 'C:\agent\_work\3\s\Scripts\BCLatestScriptDevOps.ps1'
-    - task: CopyFiles@2
-      displayName: 'Copying repo files to container'
-      inputs:
-        SourceFolder: 'C:\agent\_work\3\s'
-        Contents: '**'
-        TargetFolder: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder'
-        CleanTargetFolder: true
-
-    - task: PowerShell@1
-      displayName: 'Compile Core App'
-      inputs:
-        scriptType: inlineScript
-        inlineScript: |
-          $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
-          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\MyCore -containerName BCLatestDevOps -AzureDevOps -FailOn error -credential $credential
-
     - task: PowerShell@2
-      displayName: 'Publishing and installing - Core'
+      displayName: 'Running aut. tests in the container'
       inputs:
         targetType: filePath
-        filePath: 'C:\agent\_work\3\s\Scripts\MyCoreInstall.ps1'
+        filePath: 'C:\agent\_work\3\s\Scripts\AutoTests.ps1'
 
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact - Core'
-      inputs:
-        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\MyCore\output'
-        artifact: 'My Core App'
-        publishLocation: pipeline 
 
-    - task: PowerShell@1
-      displayName: 'Compile Test App'
-      inputs:
-        scriptType: inlineScript
-        inlineScript: |
-          $credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force)) 
-          Compile-AppInBcContainer -appProjectFolder C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\TestApp -containerName BCLatestDevOps -AzureDevOps -FailOn error -credential $credential
 
-    - task: PowerShell@2
-      displayName: 'Publishing and installing - Test App'
-      inputs:
-        targetType: filePath
-        filePath: 'C:\agent\_work\3\s\Scripts\MyTestAppInstall.ps1'
+- stage: ReadyArtifacts
+  displayName: 'Artifacts Stage'
+  jobs:
+    - job: PublishArtifacts
+      displayName: 'Publishing artifacts ready to deploy'
+      steps:
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact - Core'
+        inputs:
+          targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\MyCore\output'
+          artifact: 'My Core App'
+          publishLocation: pipeline
 
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Artifact - Test'
-      inputs:
-        targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\TestApp\output'
-        artifact: 'Test App'
-        publishLocation: pipeline
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish Artifact - Test'
+        inputs:
+          targetPath: 'C:\ProgramData\BcContainerHelper\Extensions\BCLatestDevOps\my\appProjectFolder\TestApp\output'
+          artifact: 'Test App'
+          publishLocation: pipeline
+
+
+
+# Add a section for removing the container in the end of the process        
+# Add conditions
