@@ -1,0 +1,2 @@
+$credential = [PSCredential]::new("admin", (ConvertTo-SecureString -String "Admin@123" -AsPlainText -Force))
+Run-TestsInBcContainer -containerName BCLatestDevOps -credential $credential -testCodeunitRange 50151 -detailed

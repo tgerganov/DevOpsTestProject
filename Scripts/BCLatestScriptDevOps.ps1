@@ -8,4 +8,6 @@ New-BCContainer -accept_eula -alwaysPull `
  -auth $auth -credential $credential `
  -assignPremiumPlan `
  -updateHosts -includeAL `
- -memoryLimit 4G
+ -memoryLimit 4G `
+ -includeTestToolkit `
+ -EnableTaskScheduler:$false
